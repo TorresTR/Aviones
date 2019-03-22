@@ -9,21 +9,21 @@ public class AvionC extends ClaseAvionPadre{
     /**
      * varible que contiene la matriz 
      */
-    private int listaAvionC[][];
+    private String listaAvionC[][];
 
-    private  int cont=0,cont2=0;
+    
     /**
      * constructor donde se inicializa la matriz
      */
     public AvionC() {
-        this.listaAvionC=new int[3][2];
+        this.listaAvionC=new String[3][2];
     }
 
     /**
      * Retorna los datos de la matriz 
      * @return 
      */
-    public int[][] getListaAcionC() {
+    public String[][] getListaAcionC() {
         return listaAvionC;
     }
 
@@ -31,7 +31,7 @@ public class AvionC extends ClaseAvionPadre{
      * permite asignar valores a la matriz
      * @param listaAcionC 
      */
-    public void setListaAcionC(int[][] listaAcionC) {
+    public void setListaAcionC(String[][] listaAcionC) {
         this.listaAvionC = listaAcionC;
     }
     
@@ -39,10 +39,11 @@ public class AvionC extends ClaseAvionPadre{
      * metodo que genera la lista del avion y llena la matriz con datos 
      */
     public void generarListaAvion(){
+        int cont=0;
          for (int x=0; x < listaAvionC.length; x++) {
             for (int y=0; y < listaAvionC[x].length; y++) {
-                    listaAvionC[x][y] = 0;
-                    cont2=listaAvionC[x].length;
+                    listaAvionC[x][y] = "Ex"+cont;
+                    cont++;
             }
         }
         
@@ -52,15 +53,33 @@ public class AvionC extends ClaseAvionPadre{
     
     public void imprimirListaAvion(){
         for (int x=0; x < listaAvionC.length; x++) {
-            cont+=1;
-            System.out.print(cont);
             System.out.print("|");
             for (int y=0; y < listaAvionC[x].length; y++) {
-                cont2+=1;
                 System.out.print (listaAvionC[x][y]);
                 if (y!=listaAvionC[x].length-1) System.out.print("\t");
             }
             System.out.println("|");
         }
     }
+    
+    public int buscarSillasExclusivas(String valor){
+        int mensaje=0;
+       if(valor.equals("x")){
+           mensaje=-2;
+       }else{
+            for (int x=0; x < listaAvionC.length; x++) {
+                for (int y=0; y < listaAvionC[x].length; y++) {
+                        if(listaAvionC[x][y].equals(valor)){
+                            listaAvionC[x][y] = "x"; 
+                            mensaje=1;
+                            break;
+                        }else{
+                            mensaje=-1;
+                        }
+                }
+            }
+       }
+       return mensaje;
+    }
+    
 }

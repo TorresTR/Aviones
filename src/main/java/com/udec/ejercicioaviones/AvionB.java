@@ -62,7 +62,7 @@ public class AvionB extends ClaseAvionPadre{
     
     
     public int buscarSillasNormales(String valor){
-        int mensaje=0;
+       int mensaje=0;
        if(valor.equals("x")){
            mensaje=-2;
        }else{

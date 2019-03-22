@@ -44,7 +44,7 @@ public class Logica {
                 }else if(variableSeleccion == 2){
                     menuAvionNormal();
                 }else if(variableSeleccion == 3){
-                    System.out.println(" hola soy 2");
+                    menuAvionExclusivo();
                 }else if(variableSeleccion == 4){
                     System.exit(0);
                 }else{
@@ -216,6 +216,9 @@ public class Logica {
                 }else if(id.equals("avionNormal")){
                     System.out.println("<<---ingrese solo letras, reserva cancelada--->>");
                     reservaNormal();
+                }else if(id.equals("avionExclusivo")){
+                    System.out.println("<<---ingrese solo letras, reserva cancelada--->>");
+                    reservaExclusivo();
                 }
                 
             }
@@ -331,7 +334,7 @@ public class Logica {
                 excepcionSolocadena(nomb, idComparar);
                 System.out.println("Digite su Fecha de nacimiento: ");
                 String fech = scanner.next();
-                Date fecha = validacionFechaMixtoVip(fech);
+                Date fecha = validacionFechaNormal(fech);
                 Silla asiento = new Silla(3000,numeroSilla);
                 Cliente cl = new Cliente(id, nomb, fecha);
                 asiento.getListaCliente().add(cl);
@@ -383,7 +386,7 @@ public class Logica {
             }
         return fecha;
     }
-    
+   
     public void menuAvionExclusivo(){
         System.out.println("\n------------Avion exclusivo---------------");
         System.out.println("Avion Exclusivo: ");
@@ -393,6 +396,7 @@ public class Logica {
         try {
             int variableSeleccion = scanner.nextInt();
             if(variableSeleccion == 1){
+                menuReservarAvionExclusivo();
             }else if(variableSeleccion == 2){
             }else if(variableSeleccion == 3){
                 menu();
@@ -404,7 +408,7 @@ public class Logica {
         }catch (InputMismatchException e) {
             System.out.println("\n <<<-----Profavor ingrese un numero, venta cancelada----->>>");
             scanner = new Scanner(System.in);
-            reservaVipMixto();
+            menuAvionExclusivo();
         }
         
     }
@@ -413,16 +417,16 @@ public class Logica {
         int variableSeleccion=0;
         System.out.println("\n---------------------------");
         System.out.println("Reservar silla Avion Exclusivo: ");
-        avionB.imprimirListaAvion();
+        avionC.imprimirListaAvion();
         System.out.println("\n---------------------------");
         System.out.println("1.Reservar Asiento");
         System.out.println("2.Volver");
         try {
             variableSeleccion= scanner.nextInt();
             if(variableSeleccion == 1){
-                reservaNormal();
+                reservaExclusivo();
             }else if(variableSeleccion == 2){
-                menuAvionNormal();
+                menuAvionExclusivo();
             }else{
                 System.out.println("\n---------------------------");
                 System.out.println("Ingrese un valor valido");
@@ -433,8 +437,77 @@ public class Logica {
             System.out.println("\n <<<-----No seleccionaste un Numero ingreaste un caracter no valido----->>>");
              variableSeleccion=0;
              scanner = new Scanner(System.in);
-             menuReservarAvionMixto();
+             menuReservarAvionExclusivo();
         }
     }
+    
+    public void reservaExclusivo(){
+            try{
+                String idComparar="avionExclusivo";
+                System.out.println("-----Reserva Avion Exclusivo----- ");
+                System.out.println("\nDigite El id de la silla: ");
+                String numeroSilla = scanner.next();
+                int valor = avionC.buscarSillasExclusivas(numeroSilla);
+                validacionReservaAvionExclusivo(valor);
+                System.out.println("Digite la su Identificacion: ");
+                int id = scanner.nextInt();
+                System.out.println("Digite la su nombre: ");
+                String nomb = scanner.next();
+                excepcionSolocadena(nomb, idComparar);
+                System.out.println("Digite su Fecha de nacimiento: ");
+                String fech = scanner.next();
+                Date fecha = validacionFechaExclusiva(fech);
+                Silla asiento = new Silla(3000,numeroSilla);
+                Cliente cl = new Cliente(id, nomb, fecha);
+                asiento.getListaCliente().add(cl);
+                avionC.sillaAvion.add(asiento);
+                continuarNormal();
+            }catch(InputMismatchException e){
+                System.out.println("\n <<<-----Profavor ingrese un numero, venta cancelada----->>>");
+                scanner = new Scanner(System.in);
+                reservaNormal();
+            }
+    }
+    
+    public void validacionReservaAvionExclusivo(int valor){
+           if(valor == 1){
+                System.out.println("------Reserva exitosa--------");
+            }else if(valor == -1){
+                System.out.println("----------El valor a reserva no se encuentra, Reserva cancelada---------");
+                reservaExclusivo();
+            }else if(valor == -2){
+                System.out.println("----------Lo sentimos la reserva ya existe no se puede reservar la silla---------");
+                reservaExclusivo();
+            }
+           
+    }
+    
+    public Date validacionFechaExclusiva(String fec){
+        
+        SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
+            Date fecha= null;
+            try {
+                fecha = formatoDelTexto.parse(fec);
+            } catch (ParseException ex) {
+                System.out.print("\nFecha incorrecta no lleva el formato valido venta cancelada");   
+                reservaExclusivo();
+            }
+        return fecha;
+    }
+    
+     public void continuarExclusivo(){
+        System.out.println("\n----------------");
+        System.out.println("Desea Continuar Reservando?(s/n): ");
+        String conti = scanner.next();
+        if(conti.charAt(0) == 's'){
+            menuReservarAvionExclusivo();
+        }else if(conti.charAt(0) == 'n'){
+            menuAvionExclusivo();
+        }else if(conti.charAt(0) != 's' || conti.charAt(0) != 'n' ){
+             System.out.println("ingrese un caracter valido");
+             continuarExclusivo();
+        }
+    }
+    
     
 }
